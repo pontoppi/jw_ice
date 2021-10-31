@@ -1,0 +1,33 @@
+{
+   "dust":{
+      "amin": 0.1,
+      "amax": 10,
+      "nsize":30,
+      "ice_thick":0.50,
+      "dist": {
+         "name": "power",
+         "alpha": -3.0
+      }     
+   },
+   "spectrum":{
+      "wmin": 2.5,
+      "wmax": 5.0,
+      "nwave": 200
+   },
+   "ocs": {
+      "ocpath": "OCs/",
+      "core_oc_sil": ["draine_sil.asc"],
+      "core_oc_car": ["draine_car.asc"],
+      "mantle_oc": ["ICE_COMB2.asc"]
+   },
+   "properties": {
+      "water_abun": 1e-4,
+      "ice_dens": 1.0,
+      "silicate_dens": 3.8,
+      "carbon_dens": 1.988,
+      "carbon_frac": 0.0
+   },
+   "io": {
+      "outname":"outname.fits"
+   }
+}
