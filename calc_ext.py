@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pylab as plt
-from scipy.integrate import simps #simpson
+from scipy.integrate import simps as simpson
 import json
 from astropy.io import ascii,fits
 from astropy.table import Table

@@ -31,6 +31,6 @@ master_iter_withid = [{'pars':pars,'id':ii} for ii,pars in enumerate(master_iter
 
 #run_model(master_iter_withid[0])
 
-pool = Pool(nworkers)
-pool.map(run_model,master_iter_withid)
+#pool = Pool(nworkers)
+#pool.map(run_model,master_iter_withid)
                 
