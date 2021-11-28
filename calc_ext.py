@@ -15,7 +15,7 @@ class OpacityModel():
         
         #override default config with passed parameter
         if amin:
-            self.config['dust']['amax'] = amin
+            self.config['dust']['amin'] = amin
         if amax:
             self.config['dust']['amax'] = amax
         if alpha:
