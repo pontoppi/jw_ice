@@ -22,6 +22,7 @@ class OpacityModel():
             self.config['dust']['dist']['alpha'] = alpha
         if ice_thick:
             self.config['dust']['ice_thick'] = ice_thick
+ #           self.ice_thick = self.config['dust']['ice_thick']
         if outname:
             self.config['io']['outname'] = outname
 
