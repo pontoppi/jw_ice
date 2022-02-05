@@ -83,6 +83,8 @@ class OpacityModel():
             self.mas[ia]     = self.dens_core*self.fdist[ia]*volumes[ia]
             self.mas_ice[ia] = self.dens_ice*self.fdist[ia]*(4/3)*np.pi*(((acore+self.ice_thick)*1e-4/2)**3 - (acore*1e-4/2)**3)
              
+                
+                #integrate over distribution
         self.ma_tot    = simpson(self.mas*self.acores,x=self.lnacores)
         self.maice_tot = simpson(self.mas_ice*self.acores,x=self.lnacores)
         #print('ice/rock mass ratio:',self.maice_tot/self.ma_tot)
