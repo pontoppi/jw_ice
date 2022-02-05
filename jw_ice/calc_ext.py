@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pylab as plt
 from scipy.integrate import simpson
@@ -11,11 +12,13 @@ class OpacityModel():
     def __init__(self,amin=None,amax=None,alpha=None,ice_thick=None,outname=None):
         
         
+        self.rootpath = os.path.abspath(os.path.dirname(__file__))
+        
         self.read_setup()
         
         #override default config with passed parameter
         if amin:
-            self.config['dust']['amax'] = amin
+            self.config['dust']['amin'] = amin
         if amax:
             self.config['dust']['amax'] = amax
         if alpha:
@@ -88,10 +91,11 @@ class OpacityModel():
         
                 
     def read_setup(self):
-        with open('config.json', 'r') as file:
+
+        with open(os.path.join(self.rootpath,'config.json'), 'r') as file:
             self.config = json.load(file)
         
-        self.ocpath    = self.config['ocs']['ocpath']
+        self.ocpath    = os.path.join(self.rootpath,self.config['ocs']['ocpath'])
         self.nwave     = self.config['spectrum']['nwave']
         self.nsize     = self.config['dust']['nsize']
         self.distname  = self.config['dust']['dist']['name']
