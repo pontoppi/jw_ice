@@ -9,8 +9,7 @@ import PyMieScatt as pms
 
 
 class OpacityModel():
-    def __init__(self,amin=None,amax=None,alpha=None,ice_thick=None,outname=None):
-        
+    def __init__(self,amin=None,amax=None,alpha=None,ice_thick=None,carbon_frac=None,outname=None):
         
         self.rootpath = os.path.abspath(os.path.dirname(__file__))
         
@@ -25,6 +24,8 @@ class OpacityModel():
             self.config['dust']['dist']['alpha'] = alpha
         if ice_thick:
             self.config['dust']['ice_thick'] = ice_thick
+        if carbon_frac:
+            self.config['properties']['carbon_frac'] = carbon_frac            
         if outname:
             self.config['io']['outname'] = outname
 
@@ -152,8 +153,6 @@ class OpacityModel():
         wmax = self.config['spectrum']['wmax']
         wmin = self.config['spectrum']['wmin']
         
-#        self.freqs  = 10**(np.log10(wmax/wmin)*np.arange(self.nwave)/(self.nwave-1)+np.log10(1e4/wmax))
-#        self.waves  = 1e4/self.freqs
         self.waves = np.logspace(np.log10(wmin),np.log10(wmax),self.nwave)
         self.lnacores    = np.arange(self.nsize)/(self.nsize-1)*(np.log(amax)-np.log(amin))+np.log(amin)
         self.acores = np.exp(self.lnacores)
@@ -195,8 +194,6 @@ class OpacityModel():
         
     def write_opac(self):
         outname =  self.config['io']['outname'] 
-        #out_table = Table([self.waves,self.sigma_exts_tot,self.sigma_scas_tot,self.gsca_tot], names=('wavelength','cext','csca','g'))
-        #out_table.write(outname, format='fits', overwrite=True)
         
         c1 = fits.Column(name='wavelength',format='E', array=self.waves)
         c2 = fits.Column(name='cext',format='E', array=self.sigma_exts_tot)
@@ -213,7 +210,5 @@ class OpacityModel():
         hdu.header['ratio'] = self.maice_tot/self.ma_tot
 
         hdu.writeto(outname, overwrite=True)
-
-#model = OpacityModel()
 
 
