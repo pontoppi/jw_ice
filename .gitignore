@@ -1,3 +1,6 @@
 opacities/*
 __pycache__
 *.fits
+build
+dist
+jw_ice.egg-info

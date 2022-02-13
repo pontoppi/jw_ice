@@ -15,7 +15,7 @@
       "nwave": 200
    },
    "ocs": {
-      "ocpath": "OCs/",
+      "ocpath": "../OCs/",
       "core_oc_sil": ["draine_sil.asc"],
       "core_oc_car": ["draine_car.asc"],
       "mantle_oc": ["ICE_COMB2.asc"]
