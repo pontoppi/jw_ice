@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pylab as plt
-from scipy.integrate import simpson
+from scipy.integrate import simps as simpson
 import json
 from astropy.io import ascii,fits
 from astropy.table import Table
@@ -24,8 +24,9 @@ class OpacityModel():
             self.config['dust']['dist']['alpha'] = alpha
         if ice_thick:
             self.config['dust']['ice_thick'] = ice_thick
+            self.ice_thick = ice_thick
         if carbon_frac:
-            self.config['properties']['carbon_frac'] = carbon_frac            
+            self.config['properties']['carbon_frac'] = carbon_frac
         if outname:
             self.config['io']['outname'] = outname
 
@@ -86,6 +87,8 @@ class OpacityModel():
             self.mas[ia]     = self.dens_core*self.fdist[ia]*volumes[ia]
             self.mas_ice[ia] = self.dens_ice*self.fdist[ia]*(4/3)*np.pi*(((acore+self.ice_thick)*1e-4/2)**3 - (acore*1e-4/2)**3)
              
+                
+                #integrate over distribution
         self.ma_tot    = simpson(self.mas*self.acores,x=self.lnacores)
         self.maice_tot = simpson(self.mas_ice*self.acores,x=self.lnacores)
         #print('ice/rock mass ratio:',self.maice_tot/self.ma_tot)

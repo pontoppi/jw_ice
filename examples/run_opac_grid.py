@@ -29,6 +29,7 @@ all_pars = [amins,amaxs,alphas,ice_thicks]
 master_iter = list(itertools.product(*all_pars))
 master_iter_withid = [{'pars':pars,'id':ii} for ii,pars in enumerate(master_iter)]
 
+
 if __name__ == "__main__":
     pool = Pool(nworkers)
     pool.map(run_model,master_iter_withid)
