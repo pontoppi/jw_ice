@@ -109,6 +109,7 @@ class OpacityModel():
         self.carbon_frac = self.config['properties']['carbon_frac']
     
     def read_ocs(self):
+        print(self.ocpath+self.config['ocs']['core_oc_sil'][0])
         self.core_oc_sil = ascii.read(self.ocpath+self.config['ocs']['core_oc_sil'][0])
         self.core_oc_car = ascii.read(self.ocpath+self.config['ocs']['core_oc_car'][0])
         core_index_sil = self.core_oc_sil['col2']+self.core_oc_sil['col3']*1j

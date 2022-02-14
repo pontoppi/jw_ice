@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 import itertools
 from multiprocessing import Pool
-from jw_ice.calc_ext import OpacityModel
+from calc_ext import OpacityModel
 
 counter = 0
 nworkers = 1
