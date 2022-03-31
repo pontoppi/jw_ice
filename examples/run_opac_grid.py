@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 import itertools
 from multiprocessing import Pool
-from jw_ice.calc_ext import OpacityModel
+from ..jw_ice.calc_ext import OpacityModel
 
 counter = 0
 nworkers = 1
@@ -10,7 +10,7 @@ nworkers = 1
 def run_model(pars_and_id):
     id = pars_and_id['id']
     pars = pars_and_id['pars']
-    outname = 'opacities/opacity_'+str(id)+'.fits'
+    outname = '../opacities/opacity_'+str(id)+'.fits'
     model = OpacityModel(amin=pars[0],amax=pars[1],alpha=pars[2],ice_thick=pars[3],outname=outname)
     print(outname)
     

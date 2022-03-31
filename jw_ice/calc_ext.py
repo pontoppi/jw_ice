@@ -39,7 +39,7 @@ class OpacityModel():
 
     def run_model(self):
 
-        volumes = (4.0*np.pi/3.0)*(self.acores*1e-4/2)**3.0
+        volumes = (4.0*np.pi/3.0)*(self.acores*1e-4/2)**3.0 #volume core
         
         for iw,wave in enumerate(self.waves):
             for ia,acore in enumerate(self.acores):
@@ -52,21 +52,31 @@ class OpacityModel():
         
                 '''
                 Converting from Q (dimensionless quantity measured relative to the
-                geometric cross section of a grain) to cross section per gram [cm^2/g]
-                                    Q*(pi*(dia/2)^2) 
-                cross =         -----------------------      =   Q*(3/2)/dens_av/dia
-                                (4*pi/3)*(dia/2)^3*dens_av
+                geometric cross section of a grain) to effective cross section per gram solid mass [cm^2/g]
+                                  Q*(pi*(dia_tot/2)^2) 
+                cross =         -----------------------     
+                           (4*pi/3)*(dia_core/2)^3*dens_av_core
+                                  
+                              Q*(pi*((acore+ice_thick)/2)^2)
+                      =         ----------------------- 
+                              (4*pi/3)*(acore/2)^3*dens_av 
+                      
+                      =   Q*(3/2)*(acore+ice_thick)^2/acore^3/dens_av
+                      
+                ***ice_thick is twice the thickness of the ice mantle
+                
                 '''
                 
                 #normalizing to _refractory_ component to preserve gas-to-dust ratio during freeze-out
-                self.sigma_exts[ia,iw] = self.qexts[ia,iw]*(1.5/self.dens_core)/(acore*1e-4) 
-                self.sigma_scas[ia,iw] = self.qscas[ia,iw]*(1.5/self.dens_core)/(acore*1e-4) 
+                self.sigma_exts[ia,iw] = self.qexts[ia,iw]*1.5*((acore+self.ice_thick)*1e-4)**2/(acore*1e-4)**3/self.dens_core
+                self.sigma_scas[ia,iw] = self.qscas[ia,iw]*1.5*((acore+self.ice_thick)*1e-4)**2/(acore*1e-4)**3/self.dens_core 
  
+                #multiply by total solid mass to find total extinction cross sectional area [cm^2] for each grain size
                 self.int_exts[ia,iw] = self.sigma_exts[ia,iw]*self.dens_core*self.fdist[ia]*volumes[ia]
                 self.int_scas[ia,iw] = self.sigma_scas[ia,iw]*self.dens_core*self.fdist[ia]*volumes[ia]
                 self.int_gsca[ia,iw] = self.gscas[ia,iw]*self.sigma_scas[ia,iw]*self.dens_core*self.fdist[ia]*volumes[ia]
                
-            #logarithmically integrate over distribution       
+            #logarithmically integrate over grain size distribution       
             self.sigma_exts_tot[iw] = simpson(self.int_exts[:,iw]*self.acores,x=self.lnacores)
             self.sigma_scas_tot[iw] = simpson(self.int_scas[:,iw]*self.acores,x=self.lnacores)
             self.gsca_tot[iw]       = simpson(self.int_gsca[:,iw]*self.acores,x=self.lnacores)
@@ -109,6 +119,7 @@ class OpacityModel():
         self.carbon_frac = self.config['properties']['carbon_frac']
     
     def read_ocs(self):
+    #    print(self.ocpath+self.config['ocs']['core_oc_sil'][0])
         self.core_oc_sil = ascii.read(self.ocpath+self.config['ocs']['core_oc_sil'][0])
         self.core_oc_car = ascii.read(self.ocpath+self.config['ocs']['core_oc_car'][0])
         core_index_sil = self.core_oc_sil['col2']+self.core_oc_sil['col3']*1j
